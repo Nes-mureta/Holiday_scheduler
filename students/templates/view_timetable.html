@@ -1,0 +1,50 @@
+{% load static %}
+
+{% block content %}
+<h2 class="text-center text-2xl font-bold mb-6">Your Timetable</h2>
+
+<!-- Timetable Table Layout -->
+<div class="overflow-x-auto">
+    <table class="w-full table-auto border-collapse border border-gray-200 shadow-lg">
+        <!-- Table Header: Days -->
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 bg-gray-100">Time Slot</th>
+                {% for day in days %}
+                    <th class="border border-gray-300 px-4 py-2 bg-gray-100">{{ day }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <!-- Table Body: Time Slots and Subjects -->
+        <tbody>
+            {% for time_slot in time_slots %}
+                <tr>
+                    <!-- Time Slot Column -->
+                    <td class="border border-gray-300 px-4 py-2 font-semibold text-center bg-gray-50">{{ time_slot }}</td>
+                    
+                    <!-- Subject Columns for Each Day -->
+                    {% for day in days %}
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            {% for entry in timetable_entries %}
+                                {% if entry.day == day and entry.time_slot == time_slot %}
+                                    <div class="bg-blue-100 text-blue-700 rounded p-2">{{ entry.subject }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Delete Timetable Button -->
+<div class="flex justify-center mt-6">
+    <form method="post" action=>
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            Clear Timetable
+        </button>
+    </form>
+</div>
+{% endblock %}
