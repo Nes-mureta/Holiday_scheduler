@@ -4,88 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated Timetable</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 16px;
-            text-align: left;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        #subjectForm {
-            display: none; /* Hide the form initially */
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-700">Your Generated Timetable</h1>
+
+        <!-- Toggle Button for Form -->
+        <div class="text-center mb-4">
+            <button onclick="toggleForm()" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none">
+                Generate Table
+            </button>
+        </div>
+
+        <!-- Form for Generating Timetable -->
+        <div id="subjectForm" class="hidden bg-white p-6 rounded-lg shadow-lg mb-8">
+            <form method="POST">
+                {% csrf_token %}
+
+                <label for="subjects" class="block text-gray-700 font-semibold mb-2">Subjects (comma-separated):</label>
+                <textarea id="subjects" name="subjects" rows="3" class="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" placeholder="Enter subjects separated by commas"></textarea>
+
+                <label for="activity_name" class="block text-gray-700 font-semibold mb-2">Special Activities:</label>
+                <div id="activities">
+                    <div class="activity flex items-center space-x-2 mb-4">
+                        <input type="text" name="activity_name" placeholder="Activity Name" class="flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select name="activity_day" class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                        </select>
+                        <select name="activity_time" class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select Time Slot</option>
+                            <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
+                            <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                            <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                            <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                            <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+                            <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                            <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                            <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                        </select>
+
+                        <button type="button" onclick="removeActivity(this)" class="px-3 py-1 bg-red-500 text-white rounded-lg">Remove</button>
+                    </div>
+                </div>
+                <button type="button" onclick="addActivity()" class="mt-2 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg">Add Another Activity</button>
+
+                <div class="mt-4">
+                    <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Display Timetable -->
+        {% if timetable_entries %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100 border-b border-gray-200 text-left font-semibold text-gray-700">Day</th>
+                            {% for time in time_slots %}
+                                <th class="px-4 py-2 bg-gray-100 border-b border-gray-200 text-left font-semibold text-gray-700">{{ time }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for day in days %}
+                        <tr>
+                            <td class="px-4 py-2 border-b border-gray-200 text-gray-700">{{ day }}</td>
+                            {% for time in time_slots %}
+                                <td class="px-4 py-2 border-b border-gray-200 text-center text-gray-700">
+                                    {% for entry in timetable_entries %}
+                                        {% if entry.day == day and entry.time_slot == time %}
+                                            {{ entry.subject }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex space-x-4">
+                <button onclick="window.location.href='{% url 'delete_timetable' %}'" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600">Delete Table</button>
+                <button onclick="printTimetable()" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600">Print Timetable</button>
+            </div>
+
+        {% else %}
+            <p class="text-center text-gray-600 mt-4">No timetable has been generated yet. Please input your subjects and generate one.</p>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript -->
     <script>
         function toggleForm() {
             const form = document.getElementById('subjectForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none'; // Toggle visibility
+            form.classList.toggle('hidden');
         }
 
         function printTimetable() {
-            window.print(); // Call the print dialog
+            window.print();
+        }
+
+        function addActivity() {
+            const activitiesDiv = document.getElementById('activities');
+            const activityDiv = document.createElement('div');
+            activityDiv.className = 'activity flex items-center space-x-2 mb-4';
+            activityDiv.innerHTML = `
+                <input type="text" name="activity_name" placeholder="Activity Name" class="flex-1 p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="activity_day" class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                </select>                
+                <select name="activity_time" class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Time Slot</option>
+                    <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
+                    <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                    <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                    <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+                    <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                    <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                    <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                </select>
+                <button type="button" onclick="removeActivity(this)" class="px-3 py-1 bg-red-500 text-white rounded-lg">Remove</button>
+            `;
+            activitiesDiv.appendChild(activityDiv);
+        }
+
+        function removeActivity(button) {
+            button.parentElement.remove();
         }
     </script>
-</head>
-<body>
 
-    <h1>Your Generated Timetable</h1>
-
-    <button onclick="toggleForm()">Generate Table</button>
-
-    <div id="subjectForm">
-        <form method="POST">
-            {% csrf_token %}
-            <label for="subjects">Subjects (comma-separated):</label><br>
-            <textarea id="subjects" name="subjects" rows="4" cols="50" placeholder="Enter subjects separated by commas"></textarea><br>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    {% if timetable_entries %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Day</th>
-                    {% for time in time_slots %}
-                        <th>{{ time }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for day in days %}
-                <tr>
-                    <td>{{ day }}</td>
-                    {% for time in time_slots %}
-                        <td>
-                            {% for entry in timetable_entries %}
-                                {% if entry.day == day and entry.time_slot == time %}
-                                    {{ entry.subject }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Buttons for actions -->
-        <button onclick="window.location.href='{% url 'delete_timetable' %}'">Delete Table</button>
-        <button onclick="printTimetable()">Print Timetable</button>
-
-    {% else %}
-        <p>No timetable has been generated yet. Please input your subjects and generate one.</p>
-    {% endif %}
-    
 </body>
 </html>

@@ -16,7 +16,9 @@ class Timetable(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(max_length=100)
     day = models.CharField(max_length=20)
-    time_slot = models.CharField(max_length=20,null=True)  # e.g., '08:00 AM - 09:00 AM'
+    time_slot = models.CharField(max_length=20,null=True) 
+    special_time = models.CharField(max_length=100, null=True)
+    time_range = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"{self.subject} on {self.day} at {self.time_slot}"
