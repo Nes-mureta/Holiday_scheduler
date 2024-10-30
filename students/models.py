@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True,default='https://www.shutterstock.com/shutterstock/photos/738763984/display_1500/stock-vector-default-unisex-profile-icon-framed-flat-vector-graphic-on-isolated-background-738763984.jpg')    
     level_of_education = models.CharField(max_length=100)  # You can use a choice field for predefined levels
     school_name = models.CharField(max_length=100)
 
