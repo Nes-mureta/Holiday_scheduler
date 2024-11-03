@@ -1,0 +1,50 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-blue-800 text-white px-8 py-4 flex justify-between items-center shadow">
+        <!-- Logo on the left -->
+        <div class="flex items-center">
+            <img src="" alt="Logo" class="h-10 w-10 mr-4"> <!-- Replace with your logo path -->
+        </div>
+
+        <!-- Profile Picture Link on the right -->
+        <a href="{% url 'profile' %}" class="flex items-center">
+                <img src="{{ user.profile.profile_picture.url }}" alt="Profile " class="w-10 h-10 rounded-full border border-white">
+           
+        </a>
+    </header>
+
+    <!-- Base Layout with Left Navigation -->
+    <div class="flex h-screen">
+
+        <!-- Left Navigation Bar -->
+        <aside class="bg-blue-800 text-white w-64 flex flex-col items-center py-8">
+            <!-- Navigation Links -->
+            <nav class="flex flex-col space-y-4 text-lg">
+                <a href="{% url 'dashboard' %}" class="hover:bg-blue-700 p-2 rounded">Dashboard</a>
+                <a href="{% url 'profile' %}" class="hover:bg-blue-700 p-2 rounded">Profile</a>
+                <a href="{% url 'generate_timetable' %}" class="hover:bg-blue-700 p-2 rounded">My Timetable</a>
+                <a href="{% url 'login' %}" class="hover:bg-blue-700 p-2 rounded">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-8">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+    </div>
+
+</body>
+</html>

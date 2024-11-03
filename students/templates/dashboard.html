@@ -1,31 +1,16 @@
-{% load static %}
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holiday timetable | Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Link to your CSS -->
+    <title>Holiday Timetable | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
 
-    <header class="bg-blue-800 p-6 text-white text-center shadow">
-        <h1 class="text-3xl font-bold">Dashboard</h1>
-    </header>
 
-    <div class="flex">
-        <!-- Left Navigation Bar -->
-        <nav class="bg-blue-600 w-1/4 p-4">
-            <h2 class="text-white text-lg font-semibold mb-4">Navigation</h2>
-            <ul class="text-white space-y-2">
-                <li><a href="#" class="hover:underline">Home</a></li>
-                <li><a href="#" class="hover:underline">Profile</a></li>
-                <li><a href="#" class="hover:underline">Timetable</a></li>
-                <li><a href="#" class="hover:underline">Calendar</a></li>
-                <li><a href="#" class="hover:underline">Settings</a></li>
-            </ul>
-        </nav>
 
         <!-- Main Content Area -->
         <main class="flex-1 p-6">
@@ -36,13 +21,6 @@
                         <p class="text-lg font-medium text-gray-800"><strong>Name:</strong> {{ profile.full_name }}</p>
                         <p class="text-lg text-gray-600"><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
                         <p class="text-lg text-gray-600"><strong>School:</strong> {{ profile.school_name }}</p>
-                    </div>
-                    <div class="flex-shrink-0">
-                        {% if profile.profile_picture %}
-                            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="rounded-full w-32 h-32 border border-gray-300 shadow-md">
-                        {% else %}
-                            <img src="https://www.shutterstock.com/shutterstock/photos/738763984/display_1500/stock-vector-default-unisex-profile-icon-framed-flat-vector-graphic-on-isolated-background-738763984.jpg" alt="Default Profile Picture" class="rounded-full w-32 h-32 border border-gray-300 shadow-md">
-                        {% endif %}
                     </div>
                 </div>
                 <div class="mt-4 flex-1 flex items-center justify-center">
@@ -65,3 +43,4 @@
 
 </body>
 </html>
+{% endblock %}
