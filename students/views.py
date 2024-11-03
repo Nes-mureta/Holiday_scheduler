@@ -44,10 +44,11 @@ def profile(request):
 
 @login_required
 
+
 def generate_timetable(request):
     timetable_entries = []
     
-    # Define days and time slots at the beginning
+    # Define days and time slots
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     time_slots = [
         '08:00 AM - 09:00 AM',
@@ -61,38 +62,57 @@ def generate_timetable(request):
     ]
 
     if request.method == 'POST':
-        subjects = request.POST.getlist('subjects')  
-        activity_name = request.POST.get('activity_name')  
-        activity_day = request.POST.get('activity_day') 
-        activity_time = request.POST.get('activity_time') 
+        # Retrieve and parse subjects
+        subjects_input = request.POST.get('subjects', '')
+        subjects = [subject.strip() for subject in subjects_input.split(',') if subject.strip()]
+
+        # Retrieve special activities (multiple allowed)
+        activities = []
+        activity_names = request.POST.getlist('activity_name')
+        activity_days = request.POST.getlist('activity_day')
+        activity_times = request.POST.getlist('activity_time')
+
+        for name, day, time in zip(activity_names, activity_days, activity_times):
+            if name and day and time:
+                activities.append({'name': name, 'day': day, 'time': time})
 
         # Clear existing timetables for the user
         Timetable.objects.filter(user=request.user).delete()
 
-        # Create a shuffled list of subjects for each day
-        subjects_list = subjects[0].split(',') if subjects else []  # Split the input string by commas
-        
+        # Loop through each day to populate timetable entries
         for day in days:
-            random.shuffle(subjects_list) 
-            subject_index = 0 
+            random.shuffle(subjects)  # Shuffle subjects for each day
+            subject_index = 0
+            free_slots_needed = max(0, len(time_slots) - len(subjects))
+
+            # Fill empty slots with 'Free' if there aren't enough subjects
+            subjects_for_day = subjects + ['Free'] * free_slots_needed
+            random.shuffle(subjects_for_day)  # Shuffle to randomize 'Free' placements
             
             for time in time_slots:
-                if time == '01:00 PM - 02:00 PM': 
+                # Assign Lunch slot
+                if time == '01:00 PM - 02:00 PM':
                     timetable_entry = Timetable(user=request.user, subject='Lunch', day=day, time_slot=time)
-                elif time == activity_time and day == activity_day: 
-                    timetable_entry = Timetable(user=request.user, subject=activity_name, day=day, time_slot=time)
-                else:
-                    if subject_index < len(subjects_list):
-                        subject = subjects_list[subject_index]
-                        timetable_entry = Timetable(user=request.user, subject=subject, day=day, time_slot=time)
-                        subject_index += 1  
-                    else:
-                        continue 
 
-                timetable_entry.save()  
+                # Assign special activities
+                elif any(activity['day'] == day and activity['time'] == time for activity in activities):
+                    activity = next(activity for activity in activities if activity['day'] == day and activity['time'] == time)
+                    timetable_entry = Timetable(user=request.user, subject=activity['name'], day=day, time_slot=time)
+
+                # Assign subjects or 'Free' to remaining slots
+                else:
+                    subject = subjects_for_day[subject_index]
+                    timetable_entry = Timetable(user=request.user, subject=subject, day=day, time_slot=time)
+                    subject_index = (subject_index + 1) % len(subjects_for_day)
+
+                # Save and add entry to the list
+                timetable_entry.save()
                 timetable_entries.append(timetable_entry)
 
-    # Process each entry's time slot for calendar events
+    # Retrieve timetable entries for the user to display in template
+    timetable_entries = Timetable.objects.filter(user=request.user)
+
+    # Prepare events for calendar display
     events = []
     for entry in timetable_entries:
         start_time, end_time = entry.time_slot.split(" - ")
@@ -105,9 +125,7 @@ def generate_timetable(request):
             'end': end_datetime.isoformat(),
         })
 
-    # Fetch all timetable entries for the current user
-    timetable_entries = Timetable.objects.filter(user=request.user)
-
+    # Pass context to the template
     context = {
         'timetable_entries': timetable_entries,
         'days': days,
@@ -115,6 +133,7 @@ def generate_timetable(request):
         'events': events,
     }
     return render(request, 'generate_timetable.html', context)
+
 
 def delete_timetable(request):
     Timetable.objects.filter(user=request.user).delete()
