@@ -1,41 +1,66 @@
-{% block content %}
-<h2>User Profile</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday timetable | User Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
+</head>
+<body class="bg-gray-100">
 
-<!-- Display Profile Details -->
-<div id="profile-details">
-    <p><strong>Full Name:</strong> {{ form.instance.full_name }}</p>
-    <p><strong>Profile Picture:</strong></p>
-    {% if form.instance.profile_picture %}
-        <img src="{{ form.instance.profile_picture.url }}" alt="Profile Picture" style="width: 100px; height: auto;">
-    {% endif %}
-    <p><strong>Level of Education:</strong> {{ form.instance.level_of_education }}</p>
-    <p><strong>School Name:</strong> {{ form.instance.school_name }}</p>
+<div class="min-h-screen flex items-center justify-center py-8">
+    <div class="max-w-2xl w-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-blue-600 p-6 text-white text-center">
+            <h2 class="text-3xl font-bold">User Profile</h2>
+        </div>
+
+        <!-- Profile Details -->
+        <div id="profile-details" class="p-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Profile Details</h3>
+            <div class="flex items-center mb-4">
+                <p class="mr-4"><strong>Full Name:</strong> {{ form.instance.full_name }}</p>
+                {% if form.instance.profile_picture %}
+                    <img src="{{ form.instance.profile_picture.url }}" alt="Profile Picture" class="rounded-full w-24 h-24 border border-gray-300 shadow-md">
+                {% else %}
+                    <img src="https://via.placeholder.com/100" alt="Default Profile Picture" class="rounded-full w-24 h-24 border border-gray-300 shadow-md">
+                {% endif %}
+            </div>
+            <p class="text-lg text-gray-700"><strong>Level of Education:</strong> {{ form.instance.level_of_education }}</p>
+            <p class="text-lg text-gray-700"><strong>School Name:</strong> {{ form.instance.school_name }}</p>
+        </div>
+
+        <!-- Button to Edit Profile -->
+        <div class="flex justify-center mb-6">
+            <button id="edit-profile-btn" class="bg-red-600 text-white font-semibold py-2 px-4 rounded hover:bg-red-700 transition duration-300">Edit Profile</button>
+        </div>
+
+        <!-- Edit Profile Form (Initially Hidden) -->
+        <div id="edit-profile-form" style="display: none;" class="bg-gray-50 p-6 rounded-lg shadow-md">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Edit Profile</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="flex justify-between mt-4">
+                    <button type="submit" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Update Profile</button>
+                    <button type="button" id="cancel-edit-btn" class="bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded hover:bg-gray-400 transition duration-300">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- JavaScript to Handle Form Display -->
+        <script>
+            document.getElementById('edit-profile-btn').onclick = function() {
+                document.getElementById('edit-profile-form').style.display = 'block';
+                document.getElementById('profile-details').style.display = 'none';
+            };
+
+            document.getElementById('cancel-edit-btn').onclick = function() {
+                document.getElementById('edit-profile-form').style.display = 'none';
+                document.getElementById('profile-details').style.display = 'block';
+            };
+        </script>
+    </div>
 </div>
 
-<!-- Button to Edit Profile -->
-<button id="edit-profile-btn">Edit Profile</button>
-
-<!-- Prompt Form (Initially Hidden) -->
-<div id="edit-profile-form" style="display: none;">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Profile</button>
-        <button type="button" id="cancel-edit-btn">Cancel</button>
-    </form>
-</div>
-
-<!-- JavaScript to Handle Form Display -->
-<script>
-    document.getElementById('edit-profile-btn').onclick = function() {
-        document.getElementById('edit-profile-form').style.display = 'block';
-        document.getElementById('profile-details').style.display = 'none';
-    };
-
-    document.getElementById('cancel-edit-btn').onclick = function() {
-        document.getElementById('edit-profile-form').style.display = 'none';
-        document.getElementById('profile-details').style.display = 'block';
-    };
-</script>
-
-{% endblock %}
+</body>
+</html>

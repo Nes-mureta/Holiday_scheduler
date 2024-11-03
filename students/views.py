@@ -1,59 +1,46 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomRegistrationForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from .forms import CustomLoginForm
+from .forms import RegistrationForm,ProfileForm
 from .models import Timetable,Profile
 import random
 from datetime import time, timedelta,datetime
 from django.contrib.auth.decorators import login_required
 
+def custom_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('profile') 
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
-        form = CustomRegistrationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-           # login(request, user)  Automatically logs in the user
-            return redirect('login') 
+            form.save()
+            return redirect('login')  
     else:
-        form = CustomRegistrationForm()
+        form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = CustomLoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('profile')  
-            else:
-                messages.error(request, "Invalid username or password.")
-    else:
-        form = CustomLoginForm()
-    return render(request, 'login.html', {'form': form})
-
-from django.shortcuts import render
-from .forms import ProfileForm
-
+@login_required
 def profile(request):
+    profile = request.user.profile 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            # Redirect or return success response
+            return redirect('dashboard') 
     else:
-        form = ProfileForm(instance=request.user.profile)
-
+        form = ProfileForm(instance=profile)
     return render(request, 'profile.html', {'form': form})
-
-
-
 
 @login_required
 
@@ -67,17 +54,17 @@ def generate_timetable(request):
         '09:00 AM - 10:00 AM',
         '10:00 AM - 11:00 AM', 
         '11:00 AM - 12:00 PM', 
-        '01:00 PM - 02:00 PM',  # Lunch
+        '01:00 PM - 02:00 PM',  
         '02:00 PM - 03:00 PM', 
         '03:00 PM - 04:00 PM', 
         '04:00 PM - 05:00 PM'
     ]
 
     if request.method == 'POST':
-        subjects = request.POST.getlist('subjects')  # Get subjects from the form
-        activity_name = request.POST.get('activity_name')  # Get activity name
-        activity_day = request.POST.get('activity_day')  # Get activity day
-        activity_time = request.POST.get('activity_time')  # Get activity time slot
+        subjects = request.POST.getlist('subjects')  
+        activity_name = request.POST.get('activity_name')  
+        activity_day = request.POST.get('activity_day') 
+        activity_time = request.POST.get('activity_time') 
 
         # Clear existing timetables for the user
         Timetable.objects.filter(user=request.user).delete()

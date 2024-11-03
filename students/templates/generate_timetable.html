@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generated Timetable</title>
+    <title>Holiday timetable | Generated Timetable</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -94,7 +94,7 @@
 
             <!-- Action Buttons -->
             <div class="mt-6 flex space-x-4">
-                <button onclick="window.location.href='{% url 'delete_timetable' %}'" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600">Delete Table</button>
+                <button onclick="window.location.href='{% url 'delete_timetable' %}';" class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600">Delete Table</button>
                 <button onclick="printTimetable()" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600">Print Timetable</button>
             </div>
 
@@ -127,7 +127,7 @@
                     <option value="Wednesday">Wednesday</option>
                     <option value="Thursday">Thursday</option>
                     <option value="Friday">Friday</option>
-                </select>
+                </select>                
                 <select name="activity_time" class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Time Slot</option>
                     <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
@@ -147,4 +147,7 @@
         function removeActivity(button) {
             button.parentElement.remove();
         }
-    </script
+    </script>
+
+</body>
+</html>
