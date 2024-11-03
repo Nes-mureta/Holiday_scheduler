@@ -14,7 +14,7 @@ def custom_login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('profile') 
+            return redirect('dashboard') 
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -37,7 +37,7 @@ def profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('dashboard') 
+            return redirect('profile') 
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'profile.html', {'form': form})
