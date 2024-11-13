@@ -7,28 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body class="bg-gray-100">
-
-    <!-- Top Navigation Bar -->
-    <header class="bg-blue-800 text-white px-8 py-4 flex justify-between items-center shadow">
-        <!-- Logo on the left -->
-        <div class="flex items-center">
-            <img src="" alt="Logo" class="h-10 w-10 mr-4"> <!-- Replace with your logo path -->
+    <header class="base_header">
+        <div class="logo">
+            <img src={% static 'images/logo.png'%} alt="Logo"> 
         </div>
+        <div class="pic">
+            <a href="{% url 'profile' %}" >
+            {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+            <img src={% static "images/def_pro_icon.png" %} alt="profile pic" >
+            {% endif %} </a>
+        <div>
 
-        <!-- Profile Picture Link on the right -->
-        <a href="{% url 'profile' %}" class="flex items-center">
-                <img src="{{ user.profile.profile_picture.url }}" alt="Profile " class="w-10 h-10 rounded-full border border-white">
-           
-        </a>
     </header>
 
     <!-- Base Layout with Left Navigation -->
-    <div class="flex h-screen">
+    <div class="flex h-700">
 
         <!-- Left Navigation Bar -->
-        <aside class="bg-blue-800 text-white w-64 flex flex-col items-center py-8">
+        <aside class="" id="sidebar">
             <!-- Navigation Links -->
             <nav class="flex flex-col space-y-4 text-lg">
                 <a href="{% url 'dashboard' %}" class="hover:bg-blue-700 p-2 rounded">Dashboard</a>
@@ -45,6 +46,10 @@
         </main>
 
     </div>
+    <footer class="footer">
+        <p>© 2024 Holiday timetable | All Rights Reserved.</p>
+    </footer>
+
 
 </body>
 </html>

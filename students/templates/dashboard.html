@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,41 +7,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holiday Timetable | Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
-</head>
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+   
 <body class="bg-gray-100 min-h-screen font-sans">
-
-
-
-        <!-- Main Content Area -->
-        <main class="flex-1 p-6">
-            <div class="bg-white rounded-lg shadow-md p-6 h-full flex flex-col">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h2 class="text-2xl font-semibold text-blue-800 mb-2">Profile Details</h2>
-                        <p class="text-lg font-medium text-gray-800"><strong>Name:</strong> {{ profile.full_name }}</p>
-                        <p class="text-lg text-gray-600"><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
-                        <p class="text-lg text-gray-600"><strong>School:</strong> {{ profile.school_name }}</p>
-                    </div>
-                </div>
-                <div class="mt-4 flex-1 flex items-center justify-center">
-                    <div class="bg-red-50 rounded-lg shadow-md w-full p-4 text-center">
-                        <h2 class="text-2xl font-semibold text-red-800 mb-2">Calendar</h2>
-                        <div class="overflow-auto">
-                            <div class="calendar">
-                                {{ month_calendar|safe }}  <!-- Render the custom HTML calendar -->
-                            </div>
+    <div contain>
+        <main  id="main">
+            <div class="bg-white rounded-lg  p-6 h-full flex flex-row justify-between">
+                    <div class="profile_details">
+                        <h2>Profile Details</h2>
+                        <div class="initials">
+                            <p><strong>Name:</strong> {{ profile.full_name }}</p>
+                            <p><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
+                            <p><strong>School:</strong> {{ profile.school_name }}</p>
                         </div>
+                    </div>
+            </div>
+           
+        </main>
+        <div class="calender_container">
+            <div>
+                <h2 class="text-2xl font-semibold text-red-800 mb-2">Calendar</h2>
+                <div class="overflow-auto">
+                    <div class="calendar">
+                        {{ month_calendar|safe }}  <!-- Render the custom HTML calendar -->
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
-
-    <footer class="bg-gray-200 text-center p-4 mt-8">
-        <p class="text-gray-600">© 2024 Your Company Name. All Rights Reserved.</p>
-    </footer>
-
 </body>
 </html>
 {% endblock %}

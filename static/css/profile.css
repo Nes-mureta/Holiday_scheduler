@@ -1,0 +1,98 @@
+input[type="text"],
+input[type="email"],
+input[type="file"],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.75rem; 
+    margin-bottom: 1rem;
+    border: 2px solid #ccc; 
+    border-radius: 8px;
+    font-size: 1rem; 
+    background-color: #f9fafb; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="file"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #3182ce; 
+    outline: none; 
+    background-color: #ffffff; 
+}
+
+#edit-profile-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; 
+    padding: 1.5rem; 
+    background-color: #ffffff; 
+    border-radius: 10px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+}
+
+label {
+    font-weight: bold;
+    color: #333; 
+    margin-bottom: 0.5rem; 
+}
+
+#profile-details {
+    display: flex;
+    margin: 10px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem; 
+    background-color: #ffffff; 
+    border-radius: 10px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+}
+
+#profile-details img {
+    margin-right: 1rem;
+    border: 3px solid #ccc; 
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); 
+    width: 150px;
+    height: 150px;
+    object-fit: cover; 
+    border-radius: 50%; 
+}
+
+#profile-details p {
+    margin: 20px 10px 10px 10px;
+    font-size: 1.1rem; 
+    color: #555; 
+    line-height: 1.5;
+}
+
+#profile-details strong {
+    width: 150px; 
+    font-weight: bold;
+    color: #333; 
+}
+
+@media (min-width: 768px) {
+    #profile-details {
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        justify-content: space-between;
+    }
+
+    #profile-details img {
+        margin-bottom: 1rem;
+    }
+}
+.my{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+    font-size: 30px;
+    font-weight: bolder;
+    
+}
+

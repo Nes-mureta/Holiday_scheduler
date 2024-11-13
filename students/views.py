@@ -162,7 +162,7 @@ def dashboard(request):
     
     # Generate the grid layout for the calendar
     days_names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    calendar_html = '<div class="grid grid-cols-7 gap-2">'
+    calendar_html = '<div class="grid grid-cols-7 gap-1">'
     
     # Add the days of the week header
     for day_name in days_names:
@@ -175,7 +175,7 @@ def dashboard(request):
                 calendar_html += '<div class="text-center text-gray-400"></div>'
             else:
                 if day == current_date.day and current_date.month == current_date.month:
-                    calendar_html += f'<div class="bg-yellow-300 text-center font-bold">{day}</div>'
+                    calendar_html += f'<div class="bg-blue-800 text-center font-bold">{day}</div>'
                 else:
                     calendar_html += f'<div class="text-center">{day}</div>'
     
