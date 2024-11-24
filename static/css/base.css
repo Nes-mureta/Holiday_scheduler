@@ -1,5 +1,5 @@
 .base_header{
-    height: 100px !important;
+    height: 100px;
     background-color: rgb(13, 13, 197);
     height: fit-content;
     color: #fff;
@@ -9,7 +9,7 @@
 }
 .logo img{
     width: 200px;
-    height: 200px;
+    height:90%;
 }
 .pic img{
     width: 40px;
