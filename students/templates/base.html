@@ -1,55 +1,54 @@
-<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+    <title>Holiday Timetable</title>
+    <script src="https://kit.fontawesome.com/abd9be1116.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">   
 </head>
-<body class="bg-gray-100">
-    <header class="base_header">
-        <div class="logo">
-            <img src={% static 'images/logo.png'%} alt="Logo"> 
+<body class="bg-gray-100 font-serif">
+    <header class="bg-white shadow-md fixed top-0 left-0 w-full h-16 flex items-center justify-between px-8 z-10">
+        <div class="h-16 w-16">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-16 w-16">
         </div>
-        <div class="pic">
-            <a href="{% url 'profile' %}" >
-            {% if profile.profile_picture %}
-            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
-            {% else %}
-            <img src={% static "images/def_pro_icon.png" %} alt="profile pic" >
-            {% endif %} </a>
-        <div>
-
+        <div class="pic flex-col justify-center">
+            <a href="{% url 'profile' %}">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="h-8 w-8 rounded-full">
+                {% else %}
+                    <img src="{% static 'images/def_pro_icon.png' %}" alt="Profile Picture" class="h-8 w-8 rounded-full">
+                {% endif %}
+                
+            </a>
+            <h6 class="text-xs">profile</h6>
+        </div>
     </header>
 
     <!-- Base Layout with Left Navigation -->
-    <div class="flex h-700">
-
+    <div class="flex pt-24">
         <!-- Left Navigation Bar -->
-        <aside class="" id="sidebar">
+        <aside id="aside" class="bg-white shadow-md fixed top-24 left-2 h-full rounded w-60 p-4 flex justify-center mt-1">
             <!-- Navigation Links -->
             <nav class="flex flex-col space-y-4 text-lg">
-                <a href="{% url 'dashboard' %}" class="hover:bg-blue-700 p-2 rounded">Dashboard</a>
-                <a href="{% url 'profile' %}" class="hover:bg-blue-700 p-2 rounded">Profile</a>
-                <a href="{% url 'generate_timetable' %}" class="hover:bg-blue-700 p-2 rounded">My Timetable</a>
-                <a href="{% url 'login' %}" class="hover:bg-blue-700 p-2 rounded">Logout</a>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-house"></i><a href="{% url 'dashboard' %}" class=" m-4 ">Dashboard</a></ul>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-user"></i> <a href="{% url 'profile' %}" class=" m-4">Profile</a></ul>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-calendar"></i><a href="{% url 'generate_timetable' %}" class=" m-4">My Timetable</a></ul>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-right-from-bracket"></i><a href="{% url 'login' %}" class="m-4">Logout</a></ul>
             </nav>
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 p-8">
+        <main class="flex-1 ml-64 p-8 h-screen">
             {% block content %}
             {% endblock %}
         </main>
-
     </div>
-    <footer class="footer">
-        <p>© 2024 Holiday timetable | All Rights Reserved.</p>
+
+    <footer class="footer bg-white  fixed bottom-0 left-0 w-full h-8 flex items-center justify-center">
+        <p>© 2024 Holiday Timetable | All Rights Reserved.</p>
     </footer>
-
-
 </body>
 </html>
