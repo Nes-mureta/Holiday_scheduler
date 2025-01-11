@@ -3,6 +3,7 @@
     "tailwindcss": "^3.4.17"
   },
   "scripts": {
-  "build:css": "tailwindcss build static/css/tailwind.css -o static/css/output.css"
+  "build:css": "tailwindcss build static/css/tailwind.css -o static/css/output.css",
+  "watch": "tailwindcss build static/css/tailwind.css -o static/css/output.cs --watch"
   }
 }

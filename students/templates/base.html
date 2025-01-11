@@ -14,16 +14,22 @@
         <div class="h-16 w-16">
             <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-16 w-16">
         </div>
-        <div class="pic flex-col justify-center">
-            <a href="{% url 'profile' %}">
-                {% if profile.profile_picture %}
-                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="h-8 w-8 rounded-full">
-                {% else %}
-                    <img src="{% static 'images/def_pro_icon.png' %}" alt="Profile Picture" class="h-8 w-8 rounded-full">
-                {% endif %}
-                
-            </a>
-            <h6 class="text-xs">profile</h6>
+        <div class="flex justify-items-center" style="gap:50px;">
+            <div class="flex-col justify-center" style="text-align:center;">
+                <ul class="h-8 w-8"><i class="fa-solid fa-bell"></i></ul>
+                <h6 class="text-xs">Alerts</h6>
+            </div>
+            <div class="pic flex-col justify-center ">
+                <a href="{% url 'profile' %}">
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="h-8 w-8 rounded-full">
+                    {% else %}
+                        <img src="{% static 'images/def_pro_icon.png' %}" alt="Profile Picture" class="h-8 w-8 rounded-full">
+                    {% endif %}
+                    
+                </a>
+                <h6 class="text-xs">profile</h6>
+            </div>
         </div>
     </header>
 
@@ -36,6 +42,8 @@
                 <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-house"></i><a href="{% url 'dashboard' %}" class=" m-4 ">Dashboard</a></ul>
                 <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-user"></i> <a href="{% url 'profile' %}" class=" m-4">Profile</a></ul>
                 <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-calendar"></i><a href="{% url 'generate_timetable' %}" class=" m-4">My Timetable</a></ul>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-chart-line"></i><a href="{% url 'profile' %}" class="m-4">Analytics</a></ul>
+                <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-gear"></i><a href="{% url 'profile' %}" class="m-4">Settings</a></ul>
                 <ul class="hover:bg-blue-700 p-2 rounded"><i class="fa-solid fa-right-from-bracket"></i><a href="{% url 'login' %}" class="m-4">Logout</a></ul>
             </nav>
         </aside>

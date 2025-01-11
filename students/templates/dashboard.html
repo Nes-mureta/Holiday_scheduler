@@ -25,42 +25,40 @@
         }
     </script>
     {% endif %}
-    <div class="container">
-        <main  id="main" class="flex-1  p-2 h-screen">
-            <div class="bg-white rounded-lg  p-0 h-full flex flex-row justify-between">
-                    <div class="profile_details">
-                        <h2>Profile Details</h2>
-                        <div class="initials">
-                            <p><strong>Name:</strong> {{ profile.full_name }}</p>
-                            <p><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
-                            <p><strong>School:</strong> {{ profile.school_name }}</p>
-                        </div>
-                    </div>
-            </div>
-           
-        </main>
-        <div class="bg-white shadow-md fixed flex-wrap top-24 right-2 h-full rounded w-64 p-4 flex-col  ">
-                <div class="bg-blue-500 text-white p-2 rounded ">
-                    <h2 class="text-2xl font-semibold text-red-800 ">Calendar</h2>
-                    <div class="overflow-auto">
-                        <div class="calendar">
-                            {{ month_calendar|safe }}  <!-- Render the custom HTML calendar -->
-                        </div>
+    <main  id="main" class=" bg-white shadow-md rounded-lg p-4 justify-between" style="max-width:75%;">
+        <div class="bg-blue-500 rounded-lg  p-0 flex-row justify-between ">
+                <div class="profile_details">
+                    <h2>Profile Details</h2>
+                    <div class="initials">
+                        <p><strong>Name:</strong> {{ profile.full_name }}</p>
+                        <p><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
+                        <p><strong>School:</strong> {{ profile.school_name }}</p>
                     </div>
                 </div>
-                <div class="bg-blue-500 text-white p-2 rounded  mt-4 ">
-                    <h2 class="text-2xl font-semibold text-red-800 ">Events</h2>
-                    <div class="overflow-auto">
-                        <div class="events">
-                            <ul>event data will be displayed here
-                                {% for event in events %}
-                                    <li>{{ event.title }} - {{ event.date }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                <div>
         </div>
+        
+    </main>
+    <div class="bg-white shadow-md font-mono fixed flex-wrap top-24 right-2 h-full rounded w-64 p-4 flex-col  ">
+            <div class="bg-blue-500 text-white p-2 rounded ">
+                <h2 class="text-2xl font-semibold text-red-800 ">Calendar</h2>
+                <div class="overflow-auto">
+                    <div class="calendar">
+                        {{ month_calendar|safe }}  <!-- Render the custom HTML calendar -->
+                    </div>
+                </div>
+            </div>
+            <div class="bg-blue-500 text-white p-2 rounded  mt-4 ">
+                <h2 class="text-2xl font-semibold text-red-800 ">Events</h2>
+                <div class="overflow-auto">
+                    <div class="events">
+                        <ul>event data will be displayed here
+                            {% for event in events %}
+                                <li>{{ event.title }} - {{ event.date }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            <div>
     </div>
 </body>
 </html>

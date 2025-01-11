@@ -166,7 +166,7 @@ def dashboard(request):
     
     # Add the days of the week header
     for day_name in days_names:
-        calendar_html += f'<div class="font-bold text-center">{day_name}</div>'
+        calendar_html += f'<div class="font-normal font-xs gap-1 text-center">{day_name}</div>'
 
     # Highlight the current day
     for week in month_calendar:
@@ -175,7 +175,7 @@ def dashboard(request):
                 calendar_html += '<div class="text-center text-gray-400"></div>'
             else:
                 if day == current_date.day and current_date.month == current_date.month:
-                    calendar_html += f'<div class="bg-blue-800 text-center font-bold">{day}</div>'
+                    calendar_html += f'<div class="bg-blue-800 text-center font-normal">{day}</div>'
                 else:
                     calendar_html += f'<div class="text-center">{day}</div>'
     
