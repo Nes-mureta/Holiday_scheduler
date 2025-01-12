@@ -1,9 +1,13 @@
 {
-  "dependencies": {
-    "tailwindcss": "^3.4.17"
-  },
+  "name": "your-project-name",
+  "version": "1.0.0",
   "scripts": {
   "build:css": "tailwindcss build static/css/tailwind.css -o static/css/output.css",
-  "watch": "tailwindcss build static/css/tailwind.css -o static/css/output.cs --watch"
+  "watch": "tailwindcss build static/css/tailwind.css -o static/css/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.0",
+    "postcss": "^8.0.0",
+    "autoprefixer": "^10.0.0"
   }
 }

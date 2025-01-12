@@ -25,16 +25,29 @@
         }
     </script>
     {% endif %}
-    <main  id="main" class=" bg-white shadow-md rounded-lg p-4 justify-between" style="max-width:75%;">
-        <div class="bg-blue-500 rounded-lg  p-0 flex-row justify-between ">
-                <div class="profile_details">
-                    <h2>Profile Details</h2>
-                    <div class="initials">
-                        <p><strong>Name:</strong> {{ profile.full_name }}</p>
-                        <p><strong>Level of Education:</strong> {{ profile.level_of_education }}</p>
-                        <p><strong>School:</strong> {{ profile.school_name }}</p>
-                    </div>
+    <main  id="main" class=" bg-white shadow-md rounded-lg p-2 justify-between w-7/10">
+        <h2 class="font-bold font-3xl text-center ">Profile Details</h2>
+        <div class="profile_details rounded-lg  p-8 justify-around items-center ">
+            <div class="initials flex justify-around items-center  p-4">   
+                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
+                    <ul class=" text-center">
+                        <img class="rounded-full  h-24 w-24" src="{% static 'images/user_carto.png' %}" alt="Profile Picture">
+                        <strong>Name:</strong> {{ profile.full_name }} 
+                    </ul>
                 </div>
+                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
+                    <ul class=" text-center">
+                        <img class="rounded-full h-24 w-24" src="{% static 'images/level_ed.png' %}" alt="Profile Picture">
+                        <strong>Education:</strong> {{ profile.level_of_education }} 
+                    </ul>
+                </div>
+                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
+                    <ul class=" text-center">
+                        <img class="rounded-full h-24 w-24" src="{% static 'images/school_image.png' %}" alt="Profile Picture">
+                        <strong>School:</strong> {{ profile.school_name }} 
+                    </ul>
+                </div>
+            </div>
         </div>
         
     </main>
