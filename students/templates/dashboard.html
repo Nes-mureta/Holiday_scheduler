@@ -7,72 +7,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holiday Timetable | Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">   
-<body class=" min-h-screen ">
-    {% if just_registered %}
-    <!-- Popup Modal -->
-    <div id="profilePopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-xl font-bold mb-4">Welcome!</h2>
-            <p class="mb-4">We recommend updating your profile information.</p>
-            <a href="{% url 'profile' %}" class="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Edit Profile</a>
-            <button onclick="closePopup()" class="mt-4 w-full py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Close</button>
-        </div>
-    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function closePopup() {
-            document.getElementById('profilePopup').style.display = 'none';
-        }
+        var updateTimetableUrl = "{% url 'update_timetable' %}";
+        var csrfToken = "{{ csrf_token }}";
     </script>
-    {% endif %}
-    <main  id="main" class=" bg-white shadow-md rounded-lg p-2 justify-between w-7/10">
-        <h2 class="font-bold font-3xl text-center ">Profile Details</h2>
-        <div class="profile_details rounded-lg  p-8 justify-around items-center ">
-            <div class="initials flex justify-around items-center  p-4">   
-                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
-                    <ul class=" text-center">
-                        <img class="rounded-full  h-24 w-24" src="{% static 'images/user_carto.png' %}" alt="Profile Picture">
-                        <strong>Name:</strong> {{ profile.full_name }} 
-                    </ul>
-                </div>
-                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
-                    <ul class=" text-center">
-                        <img class="rounded-full h-24 w-24" src="{% static 'images/level_ed.png' %}" alt="Profile Picture">
-                        <strong>Education:</strong> {{ profile.level_of_education }} 
-                    </ul>
-                </div>
-                <div class=" bg-blue-500 flex justify-center items-center h-42 w-42 rounded p-4">
-                    <ul class=" text-center">
-                        <img class="rounded-full h-24 w-24" src="{% static 'images/school_image.png' %}" alt="Profile Picture">
-                        <strong>School:</strong> {{ profile.school_name }} 
-                    </ul>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">   
+    <body class="min-h-screen">
+        <main id="main" class="justify-between w-7/10">
+            <h2 class="bg-white shadow-md rounded-lg text-red-600 font-bold text-2xl text-center p-2">Profile Details</h2>
+            <div class="container mt-8">
+                <div class="inner_cont flex flex-row justify-between space-x-4">
+                    <div class="bg-blue-500 rounded p-4 flex-1 flex flex-col items-center justify-center">
+                        <div class="rounded h-24 w-24"><img class="w-full h-full" src="{% static 'images/user_carto.png' %}" ></div>
+                        <div><strong>Name:</strong> {{ profile.full_name }} </div>
+                    </div>
+                    <div class="bg-blue-500 rounded p-4 flex-1 flex flex-col items-center justify-center">
+                        <div class="rounded h-24 w-24"><img class="w-full h-full" src="{% static 'images/level-ed.png' %}" ></div>
+                        <div><strong>Education:</strong> {{ profile.level_of_education }} </div>
+                    </div>
+                    <div class="bg-blue-500 rounded p-4 flex-1 flex flex-col items-center justify-center">
+                        <div class="rounded h-24 w-24"><img class="w-full h-full" src="{% static 'images/school_image.png' %}" ></div>
+                        <div><strong>School:</strong> {{ profile.school_name }} </div>
+                    </div>
                 </div>
             </div>
+       <!-- Display Subjects for Current Date -->
+        <div class="container mt-8 mx-auto my-4">
+            <h2 class="bg-white shadow-md rounded-lg text-red-500 font-bold text-2xl text-center p-2">Today's Schedule</h2>
+            {% if todays_subjects %}
+            <div class="overflow-x-auto mt-8 mb-8">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100 border-b border-gray-200 text-left font-semibold text-gray-700">Time</th>
+                            {% for entry in todays_subjects %}
+                                <th class="font-mono px-4 py-2 bg-gray-100 border-b border-gray-200 text-left  text-gray-700">{{ entry.time_slot }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="px-4 py-2 border-b border-gray-200 text-gray-700 font-semibold">Subject</td>
+                            {% for entry in todays_subjects %}
+                                <td class="px-4 py-2 border-b border-gray-200 text-gray-700">{{ entry.subject }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 border-b border-gray-200 text-gray-700 font-semibold">Completed</td>
+                            {% for entry in todays_subjects %}
+                                <td class="px-4 py-2 border-b border-gray-200 text-gray-700">
+                                    <input type="checkbox" id="completed_{{ entry.id }}" name="completed_{{ entry.id }}" {% if entry.completed %}checked{% endif %} onchange="updateCompleted({{ entry.id }}, this.checked)">    
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center text-gray-600 mt-4">No subjects scheduled for today.</p>
+        {% endif %}
         </div>
         
     </main>
     <div class="bg-white shadow-md font-mono fixed flex-wrap top-24 right-2 h-full rounded w-64 p-4 flex-col  ">
             <div class="bg-blue-500 text-white p-2 rounded ">
-                <h2 class="text-2xl font-semibold text-red-800 ">Calendar</h2>
+                <h2 class="text-2xl font-semibold text-red-500 ">Calendar</h2>
                 <div class="overflow-auto">
                     <div class="calendar">
-                        {{ month_calendar|safe }}  <!-- Render the custom HTML calendar -->
+                        {{ month_calendar|safe }}  
                     </div>
                 </div>
             </div>
             <div class="bg-blue-500 text-white p-2 rounded  mt-4 ">
-                <h2 class="text-2xl font-semibold text-red-800 ">Events</h2>
+                <h2 class="text-2xl font-semibold text-red-500 ">Events</h2>
                 <div class="overflow-auto">
                     <div class="events">
                         <ul>event data will be displayed here
-                            {% for event in events %}
-                                <li>{{ event.title }} - {{ event.date }}</li>
-                            {% endfor %}
+                           
                         </ul>
                     </div>
                 </div>
             <div>
     </div>
+    <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>
 {% endblock %}

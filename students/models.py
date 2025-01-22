@@ -19,6 +19,7 @@ class Timetable(models.Model):
     time_slot = models.CharField(max_length=20,null=True) 
     special_time = models.CharField(max_length=100, null=True)
     time_range = models.CharField(max_length=100, null=True)
+    completed=models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.subject} on {self.day} at {self.time_slot}"

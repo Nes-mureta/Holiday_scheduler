@@ -111,7 +111,8 @@ def generate_timetable(request):
 
     # Retrieve timetable entries for the user to display in template
     timetable_entries = Timetable.objects.filter(user=request.user)
-
+    
+  
     # Prepare events for calendar display
     events = []
     for entry in timetable_entries:
@@ -140,10 +141,24 @@ def delete_timetable(request):
     return redirect('generate_timetable') 
 
 
+from django.http import JsonResponse
+
+def update_timetable(request):
+    if request.method == 'POST':
+        entry_id = request.POST.get('entry_id')
+        completed = request.POST.get('completed') == 'true'
+        try:
+            entry = Timetable.objects.get(id=entry_id)
+            entry.completed = completed
+            entry.save()
+            return JsonResponse({'status': 'success'})
+        except Timetable.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Entry not found'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
+
 def dashboard(request):
     profile = Profile.objects.get(user=request.user)
-    timetable_entries = Timetable.objects.filter(user=request.user)
-    
+        
     context = {
         'profile': profile,
         'timetable_entries': timetable_entries,
@@ -155,8 +170,14 @@ import calendar
 from django.utils import timezone
 
 def dashboard(request):
-    current_date = timezone.now().date()  
-
+    current_date = timezone.now().date() 
+    current_day = datetime.now().strftime('%A')  # Get the current day name
+    todays_subjects = Timetable.objects.filter(user=request.user, day__iexact=current_day)  # Use __iexact for case-insensitive match
+     
+   # Debugging statement
+    print(f"Current day: {current_day}")
+    print(f"Today's subjects: {todays_subjects}")
+    
     # Create a calendar for the current month
     month_calendar = calendar.monthcalendar(current_date.year, current_date.month)
     
@@ -175,13 +196,14 @@ def dashboard(request):
                 calendar_html += '<div class="text-center text-gray-400"></div>'
             else:
                 if day == current_date.day and current_date.month == current_date.month:
-                    calendar_html += f'<div class="bg-blue-800 text-center font-normal">{day}</div>'
+                    calendar_html += f'<div class="bg-red-500 text-center font-normal">{day}</div>'
                 else:
                     calendar_html += f'<div class="text-center">{day}</div>'
     
     calendar_html += '</div>'  # Close the grid container
 
     context = {
+        'todays_subjects': todays_subjects,
         'profile': request.user.profile,
         'current_date': current_date,
         'month_calendar': calendar_html,  # Pass the custom calendar HTML to the template

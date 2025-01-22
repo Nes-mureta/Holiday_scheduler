@@ -10,6 +10,7 @@ urlpatterns = [
     path('generate-timetable/', views.generate_timetable, name='generate_timetable'),
     path('delete-timetable/', views.delete_timetable, name='delete_timetable'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('update_timetable/', views.update_timetable, name='update_timetable'),
 ]
 
 
