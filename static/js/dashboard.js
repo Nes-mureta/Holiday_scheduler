@@ -15,3 +15,14 @@ function updateCompleted(entryId, isCompleted) {
         }
     });
 }
+
+$(document).ready(function() {
+    var fullName = window.profileFullName;
+    var education = window.profileEducation;
+
+    if (!fullName || !education) {
+        $('#incomplete').show();
+    } else {
+        $('#incomplete').hide();
+    }
+});

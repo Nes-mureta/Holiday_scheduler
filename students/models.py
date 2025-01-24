@@ -8,8 +8,10 @@ class Profile(models.Model):
     level_of_education = models.CharField(max_length=100) 
     school_name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.user.username
+    def save(self, *args, **kwargs):
+        if not self.full_name:
+            self.full_name = self.user.username
+        super(Profile, self).save(*args, **kwargs)
 
 
 class Timetable(models.Model):

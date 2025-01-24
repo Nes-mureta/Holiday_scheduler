@@ -11,9 +11,16 @@
     <script>
         var updateTimetableUrl = "{% url 'update_timetable' %}";
         var csrfToken = "{{ csrf_token }}";
+        window.profileFullName = "{{ profile.full_name }}";
+        window.profileEducation = "{{ profile.level_of_education }}";
     </script>
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">   
     <body class="min-h-screen">
+            <div id="incomplete" class="flex flex-col shadow-md items-center bg-red-500 text-white rounded fixed top-24 p-4 mb-4 left-1/2 transform -translate-x-1/2" role="alert" ">
+                <p class="font-bold">Your Profile is Incomplete</p>
+                <p>Please complete your profile to continue smoothly.</p>
+                <a class="bg-blue-500 hover:bg-blue-700 rounded p-2" href="{% url 'profile' %}" class="text-blue-200 underline">Complete Profile</a>
+            </div>
         <main id="main" class="justify-between w-7/10">
             <h2 class="bg-white shadow-md rounded-lg text-red-600 font-bold text-2xl text-center p-2">Profile Details</h2>
             <div class="container mt-8">
@@ -65,14 +72,14 @@
                 </table>
             </div>
             {% else %}
-            <p class="text-center text-gray-600 mt-4">No subjects scheduled for today.</p>
+            <p class="text-center text-gray-600 mt-4">There is no schedule today, either you don't have a timetable or the date is not included in your table</p>
         {% endif %}
         </div>
         
     </main>
     <div class="bg-white shadow-md font-mono fixed flex-wrap top-24 right-2 h-full rounded w-64 p-4 flex-col  ">
             <div class="bg-blue-500 text-white p-2 rounded ">
-                <h2 class="text-2xl font-semibold text-red-500 ">Calendar</h2>
+                <h2 class="text-2xl font-serif font-semibold text-red-500 ">Calendar</h2>
                 <div class="overflow-auto">
                     <div class="calendar">
                         {{ month_calendar|safe }}  
@@ -80,7 +87,7 @@
                 </div>
             </div>
             <div class="bg-blue-500 text-white p-2 rounded  mt-4 ">
-                <h2 class="text-2xl font-semibold text-red-500 ">Events</h2>
+                <h2 class="text-2xl font-serif font-semibold text-red-500 ">Events</h2>
                 <div class="overflow-auto">
                     <div class="events">
                         <ul>event data will be displayed here

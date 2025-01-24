@@ -156,12 +156,19 @@ def update_timetable(request):
             return JsonResponse({'status': 'error', 'message': 'Entry not found'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
+@login_required
 def dashboard(request):
-    profile = Profile.objects.get(user=request.user)
-        
+    profile,created = Profile.objects.get_or_create(user=request.user)
+    
+    if not profile.full_name:
+        profile.full_name = request.user.username()
+        profile.save()
+    
+    
     context = {
         'profile': profile,
         'timetable_entries': timetable_entries,
+        'profile_complete': profile_complete,
     }
     return render(request, 'dashboard.html', context)
 
@@ -169,6 +176,7 @@ def dashboard(request):
 import calendar
 from django.utils import timezone
 
+@login_required
 def dashboard(request):
     current_date = timezone.now().date() 
     current_day = datetime.now().strftime('%A')  # Get the current day name
