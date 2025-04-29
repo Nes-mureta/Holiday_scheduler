@@ -1,0 +1,26 @@
+# Core framework
+Django>=4.2,<5.0
+
+# MySQL connector for Django
+mysqlclient>=2.2.0
+
+# Tailwind CSS integration for Django
+django-tailwind>=3.5.0
+
+# Optional: for handling forms nicely
+django-widget-tweaks>=1.4.12
+
+# Optional: environment variable management
+python-decouple>=3.8
+python-dotenv>=1.0.1
+
+# Optional: for static files compression (esp. Tailwind builds)
+whitenoise>=6.6.0
+
+# For deployment (optional, if using Gunicorn)
+gunicorn>=21.2.0
+
+# For linting and code quality (dev dependencies)
+black>=24.3.0
+flake8>=7.0.0
+Pillow-11.2.1

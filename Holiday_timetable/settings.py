@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'holiday_timetable',
-        'USER':'root',
-        'PASSWORD':'lucrisnes',
+        'USER':'nes',
+        'PASSWORD':'NesLucris123!',
         'HOST':'localhost',
         'PORT':'3306',
         
