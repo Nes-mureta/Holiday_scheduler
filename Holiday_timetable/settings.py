@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'Holiday_timetable.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'holiday_timetable',
-        'USER':'nes',
-        'PASSWORD':'NesLucris123!',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'schedulerdb_2nse',
+        'USER':'schedulerdb_2nse_user',
+        'PASSWORD':'PzVEuOkLhdMwRTPmDYDtxXPqVhFwiXdJ',
+        'HOST':'dpg-d25tbj95pdvs73a1kpjg-a',
+        'PORT':'5432',
         
     }
 }

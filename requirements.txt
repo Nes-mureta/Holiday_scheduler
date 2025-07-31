@@ -18,3 +18,4 @@ gunicorn>=21.2.0
 
 flake8>=7.0.0
 Pillow>=11.2.1
+psycopg2-binary>=2.9
